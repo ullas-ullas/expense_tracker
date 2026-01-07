@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Your Balance: </h2> {{ transaction_sum }} <br><br><br>
+    <form action="" method="post">
+        {% csrf_token %}
+        Description : <br>
+        <input type="text" name="description">
+        <br><br>
+        Amount: <br>
+        <input type="number" name="amount">
+        <br><br>
+        <input type="submit" value="Click">
+    </form>
+    <h3>Transactions</h3>
+    {% for obj in transaction_objs %}
+    <p>{{obj.description}} &emsp; {{obj.amount}}</p>
+    {% endfor %}
+</body>
+</html>
