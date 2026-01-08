@@ -14,7 +14,7 @@ def homeFn(request):
     transaction_sum = models.Transaction.objects.all().aggregate(Sum('amount'))['amount__sum']
     if transaction_sum is None:
         transaction_sum = 0
-    all_transactions = models.Transaction.objects.all()
+    all_transactions = models.Transaction.objects.all().order_by('-created_at')
 
     print(transaction_sum)
     return render(request,'home.html', {'transaction_sum': transaction_sum, 'transaction_objs': all_transactions})

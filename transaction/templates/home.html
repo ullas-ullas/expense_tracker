@@ -1,25 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Transactions</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h2>Your Balance: </h2> {{ transaction_sum }} <br><br><br>
-    <form action="" method="post">
-        {% csrf_token %}
-        Description : <br>
-        <input type="text" name="description">
-        <br><br>
-        Amount: <br>
-        <input type="number" name="amount">
-        <br><br>
-        <input type="submit" value="Click">
-    </form>
-    <h3>Transactions</h3>
-    {% for obj in transaction_objs %}
-    <p>{{obj.description}} &emsp; {{obj.amount}}</p>
-    {% endfor %}
+    <div class="container">
+        <h2>Your Balance: </h2> 
+        <p class="balance">{{ transaction_sum }}</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <label>Description</label>
+            <input type="text" name="description" required>
+
+            <label>Amount</label>
+            <input type="number" name="amount" required>
+
+            <button type="submit">Add Transaction</button>
+        </form>
+        <h3>Transactions</h3>
+        <div class="transactions">
+            {% for obj in transaction_objs %}
+                <div class="transaction">
+                    <span>{{ obj.description }}</span>
+                    <span>{{ obj.amount }}</span>
+                </div>
+            {% empty %}
+                <p class="empty">No transactions yet</p>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
