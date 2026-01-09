@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from . import models
-from django.db.models import Sum
+from .models import Transaction
+from django.db.models import Sum, Case, When, DecimalField
 
 # Create your views here.
 
@@ -9,12 +9,24 @@ def homeFn(request):
         print(request.POST)
         description = request.POST.get("description")
         amount = request.POST.get("amount")
-        models.Transaction.objects.create(description = description , amount = amount)
+        Transaction.objects.create(description = description , amount = amount)
         return redirect('homepage')
-    transaction_sum = models.Transaction.objects.all().aggregate(Sum('amount'))['amount__sum']
+    transaction_sum = Transaction.objects.all().aggregate(Sum('amount'))['amount__sum']
     if transaction_sum is None:
         transaction_sum = 0
-    all_transactions = models.Transaction.objects.all().order_by('-created_at')
+    total = Transaction.objects.aggregate(
+        income = Sum(Case(
+            When(amount__gte = 0, then='amount'),
+            default=0,
+            output_field=DecimalField()
+        )),
+        expense = Sum(Case(
+            When(amount__lt = 0, then='amount'),
+            default=0,
+            output_field=DecimalField()
+        ))
+    )
+    all_transactions = Transaction.objects.all().order_by('-created_at')
 
-    print(transaction_sum)
-    return render(request,'home.html', {'transaction_sum': transaction_sum, 'transaction_objs': all_transactions})
+    print(total)
+    return render(request,'home.html', {'transaction_sum': transaction_sum, 'transaction_objs': all_transactions, 'income_sum': total['income'], 'expense_sum': total['expense']})

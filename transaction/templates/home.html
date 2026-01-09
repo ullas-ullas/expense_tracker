@@ -12,6 +12,17 @@
         <h2>Your Balance: </h2> 
         <p class="balance">{{ transaction_sum }}</p>
 
+        <div class="wrapper">
+            <div class="income">
+            <h3>Income</h3>
+            <p>{{income_sum}}</p>
+            </div>
+            <div class="expense">
+            <h3>Expense</h3>
+            <p>{{expense_sum}}</p>
+            </div>
+        </div>
+
         <form action="" method="post">
             {% csrf_token %}
             <label>Description</label>
@@ -25,7 +36,7 @@
         <h3>Transactions</h3>
         <div class="transactions">
             {% for obj in transaction_objs %}
-                <div class="transaction">
+                <div class="transaction {% if obj.amount < 0 %}negative{% else %}possitive{% endif %}">
                     <span>{{ obj.description }}</span>
                     <span>{{ obj.amount }}</span>
                 </div>

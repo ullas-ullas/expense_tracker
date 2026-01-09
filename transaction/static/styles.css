@@ -18,6 +18,19 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+.wrapper {
+    display: flex;
+justify-content: space-evenly;}
+
+.negative {
+    color: red;
+}
+
+.possitive {
+    color: rgb(22, 211, 16);
+}
+
+
 h2, h3 {
     text-align: center;
     margin-bottom: 10px;
@@ -79,4 +92,12 @@ button:hover {
     text-align: center;
     color: #777;
     font-size: 14px;
+}
+
+.income {
+    color: rgb(51, 226, 51);
+}
+
+.expense {
+    color: red;
 }
