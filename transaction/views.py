@@ -30,3 +30,9 @@ def homeFn(request):
 
     print(total)
     return render(request,'home.html', {'transaction_sum': transaction_sum, 'transaction_objs': all_transactions, 'income_sum': total['income'], 'expense_sum': total['expense']})
+
+def delete_transaction(request, id):
+    item_to_delete = Transaction.objects.filter(pk = id)
+    if item_to_delete.exists():
+        item_to_delete.delete()
+    return redirect('homepage')

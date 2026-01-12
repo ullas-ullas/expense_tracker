@@ -15,11 +15,19 @@
         <div class="wrapper">
             <div class="income">
             <h3>Income</h3>
+            {% if income_sum%}
             <p>{{income_sum}}</p>
+            {% else %}
+            <p>0</p>
+            {% endif %}
             </div>
             <div class="expense">
             <h3>Expense</h3>
+            {% if expense_sum%}
             <p>{{expense_sum}}</p>
+            {% else %}
+            <p>0</p>
+            {% endif %}
             </div>
         </div>
 
@@ -31,15 +39,22 @@
             <label>Amount</label>
             <input type="number" name="amount" required>
 
-            <button type="submit">Add Transaction</button>
+            <button class="btn-submit" type="submit">Add Transaction</button>
         </form>
         <h3>Transactions</h3>
         <div class="transactions">
+            
             {% for obj in transaction_objs %}
+            {% if obj.uuid%}
+            <form action="{% url 'delete_tr' obj.uuid %}" method="post">
+            {% csrf_token %}
                 <div class="transaction {% if obj.amount < 0 %}negative{% else %}possitive{% endif %}">
                     <span>{{ obj.description }}</span>
-                    <span>{{ obj.amount }}</span>
+                    <span class="cross">{{ obj.amount }}</span>
+                    <button class="submit-btn" type = "submit">X</button>
                 </div>
+            </form>
+            {% endif %}
             {% empty %}
                 <p class="empty">No transactions yet</p>
             {% endfor %}

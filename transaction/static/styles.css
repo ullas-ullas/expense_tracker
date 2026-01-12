@@ -58,7 +58,7 @@ form input {
     border-radius: 4px;
 }
 
-button {
+.btn-submit {
     width: 100%;
     padding: 10px;
     background: #2c7be5;
@@ -69,7 +69,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.btn-submit:hover {
     background: #1a5fd0;
 }
 
@@ -79,13 +79,36 @@ button:hover {
 
 .transaction {
     display: flex;
+    width: 100%;
     justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
+    padding: 8px 30px;
+    border: none;
+    background-color: #ffffff;
+    font-size: 1rem;
 }
-
+  
 .transaction:last-child {
     border-bottom: none;
+}
+
+.cross {
+    margin-left: auto;
+}
+
+.submit-btn {
+    border: none;
+    background-color: rgb(255, 55, 55);
+    font-size: 1rem;
+    display: none;
+    color: white;
+}
+
+.transaction:hover .submit-btn {
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 .empty {
