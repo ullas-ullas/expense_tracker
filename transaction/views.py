@@ -1,21 +1,25 @@
 from django.shortcuts import render, redirect
 from .models import Transaction
 from django.db.models import Sum, Case, When, DecimalField
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
+@login_required
 def homeFn(request):
     print(request.user)
     if request.method == "POST":
         print(request.POST)
         description = request.POST.get("description")
         amount = request.POST.get("amount")
-        Transaction.objects.create(description = description , amount = amount)
+
+        Transaction.objects.create(description = description , amount = amount, user = request.user)
         return redirect('transaction:homepage')
-    transaction_sum = Transaction.objects.all().aggregate(Sum('amount'))['amount__sum']
+    transaction_sum = Transaction.objects.filter(user = request.user).aggregate(Sum('amount'))['amount__sum']
     if transaction_sum is None:
         transaction_sum = 0
-    total = Transaction.objects.aggregate(
+    total = Transaction.objects.filter(user = request.user).aggregate(
         income = Sum(Case(
             When(amount__gte = 0, then='amount'),
             default=0,
@@ -27,7 +31,7 @@ def homeFn(request):
             output_field=DecimalField()
         ))
     )
-    all_transactions = Transaction.objects.all().order_by('-created_at')
+    all_transactions = Transaction.objects.filter(user = request.user).order_by('-created_at')
 
     print(total)
 

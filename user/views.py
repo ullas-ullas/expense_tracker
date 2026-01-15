@@ -18,6 +18,8 @@ def register(request):
             messages.info(request, "User exists with same username / email")
             return redirect('registration')
         user = User.objects.create_user(username=username, first_name = firstname, last_name = lastname, email = email , password = password)
+        login(request, user)
+        return redirect('transaction:homepage')
         # create_user method handles password encryption . if using normal create method , then use set_password(pwd) to create encrypted password
     return render(request, 'registration.html')
 
